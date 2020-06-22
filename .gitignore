@@ -1,11 +1,15 @@
 # Prerequisites
 *.d
-
+*.iso
 # Object files
 *.o
 *.ko
 *.obj
 *.elf
+*.ld
+#workspace
+*.code-workspace
+
 
 # Linker output
 *.ilk
@@ -15,6 +19,7 @@
 # Precompiled Headers
 *.gch
 *.pch
+*.QOSE
 
 # Libraries
 *.lib
@@ -35,7 +40,7 @@
 *.i*86
 *.x86_64
 *.hex
-
+*.os
 # Debug files
 *.dSYM/
 *.su
