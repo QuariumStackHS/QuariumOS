@@ -26,6 +26,6 @@ os.system("cp output/prebuild/Quarium.QOSE output/isodir/boot/Quarium.os")
 
 os.system("cp grub.cfg output/isodir/boot/grub/grub.cfg")
 
-os.system("grub-mkrescue -o output/build/QuariumOS.iso isodir")
+os.system("grub-mkrescue -o output/build/QuariumOS.iso output/isodir")
 
 os.system("qemu-system-x86_64 -cdrom output/build/QuariumOS.iso")
