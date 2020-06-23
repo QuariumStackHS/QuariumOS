@@ -1,6 +1,5 @@
 #include "utils.h"
 
-
 uint32 strlen(const char* str)
 {
   uint32 length = 0;
