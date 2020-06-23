@@ -1,6 +1,5 @@
 # Prerequisites
 *.d
-*.iso
 # Object files
 *.ko
 *.obj
