@@ -17,7 +17,6 @@
 # Precompiled Headers
 *.gch
 *.pch
-*.QOSE
 
 # Libraries
 *.lib
