@@ -5,7 +5,6 @@
 *.ko
 *.obj
 *.elf
-*.ld
 #workspace
 *.code-workspace
 
