@@ -2,7 +2,6 @@
 *.d
 *.iso
 # Object files
-*.o
 *.ko
 *.obj
 *.elf
