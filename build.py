@@ -1,22 +1,37 @@
 import os
-
+import threading
+import glob
 os.system("as --32 GAS/boot.s -o output/obj/boot.o")
+#os.system("as --32 GAS/kernel.s -o output/obj/kernel.o")
 
+def run(c):
+    print(c)
+    os.system(c)
 
-os.system("gcc -m32 -IHeader -c C/Kernel/kernel.c -o output/obj/kernel.o -std=gnu99 -ffreestanding -O1 -Wall -Wextra")
+objlist=[]
+C=glob.glob("C/*/*.c")
+for i in C:
+    j=i.split("/")[-1].split(".")[0]
+    objlist.append(f"output/obj/C-{j}.o")
+    stri=f"gcc -m32 -IHeader -c {i} -o output/obj/C-{j}.o -std=gnu99 -ffreestanding -O1 -Wall -Wextra"
+    x=threading.Thread(target=run,args=(stri,))
+    x.start()
+C=glob.glob("GAS/*.s")
+for i in C:
+    j=i.split("/")[-1].split(".")[0]
+    objlist.append(f"output/obj/GAS-{j}.o")
+    stri=f"as --32 {i} -o output/obj/GAS-{j}.o"
+    x=threading.Thread(target=run,args=(stri,))
+    x.start()
+x.join()
+while threading.activeCount()>1: pass
+ldstr=""
+for i in objlist:
+    ldstr+=f"{i} "
+os.system(f"ld -m elf_i386 -T output/obj/linker.ld {ldstr}-o output/prebuild/Quarium.QOSE -nostdlib")
+print(ldstr)
 
-
-os.system("gcc -m32 -IHeader -c C/utils/utils.c -o output/obj/utils.o -std=gnu99 -ffreestanding -O1 -Wall -Wextra")
-
-
-os.system("gcc -m32 -IHeader -c C/box/box.c -o output/obj/box.o -std=gnu99 -ffreestanding -O1 -Wall -Wextra")
-
-
-os.system("gcc -m32 -IHeader -c C/str/str.c -o output/obj/str.o -std=gnu99 -ffreestanding -O1 -Wall -Wextra")
-
-
-
-os.system("ld -m elf_i386 -T output/obj/linker.ld output/obj/boot.o output/obj/str.o output/obj/kernel.o output/obj/utils.o output/obj/box.o -o output/prebuild/Quarium.QOSE -nostdlib")
+#os.system("ld -m elf_i386 -T output/obj/linker.ld output/obj/kernel.o -o output/prebuild/Quarium.QOSE -nostdlib")
 
 os.system("grub-file --is-x86-multiboot output/prebuild/Quarium.QOSE")
 
@@ -29,3 +44,4 @@ os.system("cp grub.cfg output/isodir/boot/grub/grub.cfg")
 os.system("grub-mkrescue -o output/build/QuariumOS.iso output/isodir")
 
 os.system("qemu-system-x86_64 -cdrom output/build/QuariumOS.iso")
+

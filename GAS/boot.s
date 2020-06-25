@@ -45,7 +45,7 @@ _start:
 
 # put system in infinite loop
 hltLoop:
-
+	call _start
 	hlt
 	jmp hltLoop
 

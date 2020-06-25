@@ -52,9 +52,9 @@ void clear_screen(uint8 fore_color, uint8 back_color)
 void clear_F(){
   clear_screen(g_fore_color,g_back_color);
   gotoxy(1,1);
-  char strs[]="                        QuariumOS version: ";
+  char strs[]="                        Mutiny version: ";
 
-  print_string(strs);
+  print_color_string(strs,RED,BLACK);
   print_string(VERSION);
 
   
@@ -128,6 +128,7 @@ void outb(uint16 port, uint8 data)
   asm volatile("outb %0, %1"
                : "=a"(data)
                : "d"(port));
+  
 }
 
 byte get_input_keycode()
@@ -249,9 +250,12 @@ char get_char(byte c)
 }
 void kernel_entry()
 {
-  byte ans = KEY_Y;
-  init_vga(WHITE, BLACK);
+    init_vga(WHITE, BLACK);
   clear_screen(WHITE, BLACK);
+  byte ans = KEY_Y;
+  //print_int(__INT64_MAX__-1);
+  print_string(" <--- this is the vga cursor but the real cursor is not that");
+  sleep(999999999);sleep(999999999);sleep(999999999);sleep(999999999);
   int size=0;
   char line[] = "";
   char abc[] = "abc";
@@ -262,7 +266,7 @@ void kernel_entry()
   if (BUFSIZE-200<=vga_index){clear_screen(WHITE,BLACK); gotoxy(0,0);}
   draw_box(BOX_SINGLELINE, z, v, 15, 7, BLUE, BRIGHT_CYAN);
   gotoxy(z + 1, v + 1);
-  print_string("    QUARIUM    ");
+  print_color_string("    Mutiny    ",RED,BLACK);
   gotoxy(z + 1, v + 2);
   print_string("      OS       ");
   gotoxy(z + 1, v + 3);
