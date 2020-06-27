@@ -3,6 +3,7 @@
 #include "keyboard.h"
 #include "str.h"
 #include "box.h"
+//#include "main.s"
 
 char VERSION[]="0.0.1";
 uint32 vga_index;
@@ -250,7 +251,8 @@ char get_char(byte c)
 }
 void kernel_entry()
 {
-    init_vga(WHITE, BLACK);
+  extern go_to_protected;
+  init_vga(WHITE, BLACK);
   clear_screen(WHITE, BLACK);
   byte ans = KEY_Y;
   //print_int(__INT64_MAX__-1);
@@ -279,14 +281,14 @@ void kernel_entry()
   print_string("               ");
   gotoxy(z + 1, v + 7);
   print_string("BY Slow_Riding ");
-
+  go_to_pro();
   sleep(9999999999);
   clear_F();
   //clear_screen(WHITE, BLACK);
   while (1)
   {
     
-
+    go_to_protected();
     ans = get_input_keycode();
     //gotoxy(x, y);
     if ((int)(get_char(ans)) == 28)
