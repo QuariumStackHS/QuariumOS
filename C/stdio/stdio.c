@@ -1,0 +1,4 @@
+
+void printf(char* str){
+    
+}
