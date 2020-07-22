@@ -4,7 +4,7 @@
 #include "str.h"
 #include "box.h"
 //extern vga_index;
-extern void goprotectedmod();
+extern int goprotectedmod();
 uint16 get_box_draw_char(uint8 chn, uint8 fore_color, uint8 back_color)
 {
   uint16 ax = 0;
@@ -20,7 +20,7 @@ uint16 get_box_draw_char(uint8 chn, uint8 fore_color, uint8 back_color)
   return ax;
 }
 
-void draw_generic_box(uint16 x, uint16 y, 
+void draw_generic_box(uint16 x, uint16 y,
                       uint16 width, uint16 height,
                       uint8 fore_color, uint8 back_color,
                       uint8 topleft_ch,
@@ -33,7 +33,7 @@ void draw_generic_box(uint16 x, uint16 y,
   uint32 i;
 
   //increase vga_index to x & y location
-  vga_index = 80*y;
+  vga_index = 80 * y;
   vga_index += x;
 
   //draw top-left box character
@@ -41,7 +41,8 @@ void draw_generic_box(uint16 x, uint16 y,
 
   vga_index++;
   //draw box top characters, -
-  for(i = 0; i < width; i++){
+  for (i = 0; i < width; i++)
+  {
     vga_buffer[vga_index] = get_box_draw_char(topbottom_ch, fore_color, back_color);
     vga_index++;
   }
@@ -52,11 +53,12 @@ void draw_generic_box(uint16 x, uint16 y,
   // increase y, for drawing next line
   y++;
   // goto next line
-  vga_index = 80*y;
+  vga_index = 80 * y;
   vga_index += x;
 
   //draw left and right sides of box
-  for(i = 0; i < height; i++){
+  for (i = 0; i < height; i++)
+  {
     //draw left side character
     vga_buffer[vga_index] = get_box_draw_char(leftrightside_ch, fore_color, back_color);
     vga_index++;
@@ -66,14 +68,15 @@ void draw_generic_box(uint16 x, uint16 y,
     vga_buffer[vga_index] = get_box_draw_char(leftrightside_ch, fore_color, back_color);
     //goto next line
     y++;
-    vga_index = 80*y;
+    vga_index = 80 * y;
     vga_index += x;
   }
   //draw bottom-left box character
   vga_buffer[vga_index] = get_box_draw_char(bottomleft_ch, fore_color, back_color);
   vga_index++;
   //draw box bottom characters, -
-  for(i = 0; i < width; i++){
+  for (i = 0; i < width; i++)
+  {
     vga_buffer[vga_index] = get_box_draw_char(topbottom_ch, fore_color, back_color);
     vga_index++;
   }
@@ -83,36 +86,39 @@ void draw_generic_box(uint16 x, uint16 y,
   vga_index = 0;
 }
 
-void draw_box(uint8 boxtype, 
-              uint16 x, uint16 y, 
+void draw_box(uint8 boxtype,
+              uint16 x, uint16 y,
               uint16 width, uint16 height,
               uint8 fore_color, uint8 back_color)
 {
-  switch(boxtype){
-    case BOX_SINGLELINE : 
-      draw_generic_box(x, y, width, height, 
-                      fore_color, back_color, 
-                      218, 196, 191, 179, 192, 217);
-      break;
+  switch (boxtype)
+  {
+  case BOX_SINGLELINE:
+    draw_generic_box(x, y, width, height,
+                     fore_color, back_color,
+                     218, 196, 191, 179, 192, 217);
+    break;
 
-    case BOX_DOUBLELINE : 
-      draw_generic_box(x, y, width, height, 
-                      fore_color, back_color, 
-                      201, 205, 187, 186, 200, 188);
-      break;
+  case BOX_DOUBLELINE:
+    draw_generic_box(x, y, width, height,
+                     fore_color, back_color,
+                     201, 205, 187, 186, 200, 188);
+    break;
   }
 }
 
 void fill_box(uint8 ch, uint16 x, uint16 y, uint16 width, uint16 height, uint8 color)
 {
-  uint32 i,j;
+  uint32 i, j;
 
-  for(i = 0; i < height; i++){
+  for (i = 0; i < height; i++)
+  {
     //increase vga_index to x & y location
-    vga_index = 80*y;
+    vga_index = 80 * y;
     vga_index += x;
 
-    for(j = 0; j < width; j++){
+    for (j = 0; j < width; j++)
+    {
       vga_buffer[vga_index] = get_box_draw_char(ch, 0, color);
       vga_index++;
     }
@@ -120,7 +126,7 @@ void fill_box(uint8 ch, uint16 x, uint16 y, uint16 width, uint16 height, uint8 c
   }
 }
 
-char VERSION[]="0.0.1";
+char VERSION[] = "0.0.1";
 uint32 vga_index;
 static uint32 next_line_index = 1;
 uint8 g_fore_color = WHITE, g_back_color = BLUE;
@@ -165,20 +171,22 @@ void clear_screen(uint8 fore_color, uint8 back_color)
 {
   clear_vga_buffer(&vga_buffer, fore_color, back_color);
 }
-void clear_FS(){print_string("test");}
-void clear_F(){
-  clear_screen(g_fore_color,g_back_color);
-  gotoxy(1,1);
-  char strs[]="                        Mutiny version: ";
+void clear_FS() { print_string("test"); }
+void clear_F()
+{
+  clear_screen(g_fore_color, g_back_color);
+  gotoxy(1, 1);
+  char strs[] = "                        Mutiny version: ";
 
-  print_color_string(strs,RED,BLACK);
+  print_color_string(strs, RED, BLACK);
   print_string(VERSION);
 
-  
-  draw_box(BOX_DOUBLELINE,0,0,78,1,g_fore_color,g_back_color);
-  
+  draw_box(BOX_DOUBLELINE, 0, 0, 78, 1, g_fore_color, g_back_color);
 
-  print_new_line();print_new_line();print_new_line(); return;
+  print_new_line();
+  print_new_line();
+  print_new_line();
+  return;
 }
 void print_new_line()
 {
@@ -234,7 +242,9 @@ void print_int(int num)
 uint8 inb(uint16 port)
 {
   uint8 ret;
-  asm volatile("inb %1, %0": "=a"(ret): "d"(port));
+  asm volatile("inb %1, %0"
+               : "=a"(ret)
+               : "d"(port));
   return ret;
 }
 
@@ -243,7 +253,6 @@ void outb(uint16 port, uint8 data)
   asm volatile("outb %0, %1"
                : "=a"(data)
                : "d"(port));
-  
 }
 
 byte get_input_keycode()
@@ -251,26 +260,34 @@ byte get_input_keycode()
   uint16 oldvgai = vga_index;
   int curs = 0;
   int a = 0;
-  int j=0;
+  int j = 0;
   byte keycode = 0;
   print_color_string("_", WHITE, BLACK);
   while ((keycode = inb(KEYBOARD_PORT)) != 0)
   {
     vga_index = oldvgai;
-    if (keycode > 0){
-      a = 1;}
+    if (keycode > 0)
+    {
+      a = 1;
+    }
 
-      if (j==200000/10){print_color_string("_", WHITE, BLACK);j=0;}
-      if (j==100000/10){print_color_string("_", BLACK, BLACK);}
-      j++;
+    if (j == 200000 / 10)
+    {
+      print_color_string("_", WHITE, BLACK);
+      j = 0;
+    }
+    if (j == 100000 / 10)
+    {
+      print_color_string("_", BLACK, BLACK);
+    }
+    j++;
 
-      if (a)
-      {
-        print_color_string("_", BLACK, BLACK);
-        vga_index=oldvgai;
-        return keycode;
-      }
-    
+    if (a)
+    {
+      print_color_string("_", BLACK, BLACK);
+      vga_index = oldvgai;
+      return keycode;
+    }
   }
   return keycode;
 }
@@ -339,42 +356,48 @@ char get_char(byte c)
   {
     return 'h';
   }
-  else if (c==KEY_I)
+  else if (c == KEY_I)
   {
     return 'i';
   }
-  else if (c==KEY_J)
+  else if (c == KEY_J)
   {
     return 'j';
   }
-  else if (c==KEY_F12)
+  else if (c == KEY_F12)
   {
-    return (char) 28;
+    return (char)28;
   }
-  else if (c==KEY_BACKSPACE)
+  else if (c == KEY_BACKSPACE)
   {
-    return (char) 8;
+    return (char)8;
   }
-  else if (c==KEY_S){
+  else if (c == KEY_S)
+  {
     return 's';
   }
-  else if (c==KEY_L){
+  else if (c == KEY_L)
+  {
     return 'l';
   }
-  else if (c==KEY_X)
+  else if (c == KEY_X)
   {
-     return 'x';
+    return 'x';
   }
-  else if (c==KEY_T)
+  else if (c == KEY_T)
   {
     return 't';
   }
+  else if (c==KEY_1)
+  {
+    
+  }
   
+
   //int v=c+100;
   //print_int(c);
-  //return (char) v;/*81*/ 
-  
-  
+  //return (char) v;/*81*/
+
   else
   {
     return '\0';
@@ -383,28 +406,38 @@ char get_char(byte c)
 /*void go_to_protected(){
   asm
 }*/
-void kernel_entry(){
+void kernel_entry()
+{
   //extern go_to_protected();
   init_vga(WHITE, BLACK);
   clear_screen(WHITE, BLACK);
   byte ans = KEY_Y;
   //print_int(__INT64_MAX__-1);
   print_string(" <--- this is the vga cursor but the real cursor is not that");
-  sleep(999999999);sleep(999999999);
+  sleep(999999999);
+  //sleep(999999999);
+
   goprotectedmod();
-  
-  int size=0;
+  //sleep(999999999);
+
+  //asm("");
+  //asm("int 0x1A");
+  int size = 0;
   char line[] = "";
   char abc[] = "abc";
   int l = 0;
   int z = 32; //X
-  int v = 7; //Y
-  vga_index=2200;
-  if (BUFSIZE-200<=vga_index){clear_screen(WHITE,BLACK); gotoxy(0,0);}
+  int v = 7;  //Y
+  vga_index = 2200;
+  if (BUFSIZE - 200 <= vga_index)
+  {
+    clear_screen(WHITE, BLACK);
+    gotoxy(0, 0);
+  }
   draw_box(BOX_DOUBLELINE, z, v, 16, 7, RED, BLACK);
   gotoxy(z + 1, v + 1);
   //vg=(char) 200;
-  print_color_string("    Mutiny    ",RED,BLACK);
+  print_color_string("    Mutiny    ", RED, BLACK);
   gotoxy(z + 1, v + 2);
   print_string("      OS       ");
   gotoxy(z + 1, v + 3);
@@ -418,19 +451,20 @@ void kernel_entry(){
   gotoxy(z + 1, v + 7);
   print_string("BY Slow_Riding ");
   //go_to_pro();
-  sleep(9999999999);
+  //sleep(9999999999);
   clear_F();
   //clear_screen(WHITE, BLACK);
   //go_to_protected();
   //sleep(99999999999999999);
-  bool Running=TRUE;
+  bool Running = TRUE;
+  //print_char((char)28);
   while (Running)
   { /*for(int i=0;i<255;i++){
     print_int(i);
     print_char((char) i);
     print_char((char) 32);  }
     */
-    
+//print_string(line);
     ans = get_input_keycode();
     //gotoxy(x, y);
     if ((int)(get_char(ans)) == 28)
@@ -438,11 +472,13 @@ void kernel_entry(){
       break;
     }
     else if (ans == KEY_ENTER)
-    {print_new_line();
-      
+    {
+
+      print_new_line();
+    print_string(line);
       if (strbegw("abc", line))
       {
-        
+
         print_string("welcome ABCP");
         print_int((int)KEY_A);
         print_int((int)'a');
@@ -450,34 +486,78 @@ void kernel_entry(){
         print_new_line();
         //y+2
       }
-      else if (strbegw("ls",line)){
+      else if (strbegw("ls", line))
+      {
         print_string("ls command dont work\n");
       }
-      else if (strcomp("exit",line))
+      else if (strcomp("exit", line))
       {
-        Running=FALSE;
+        Running = FALSE;
       }
-      
+      else if (strbegw("gas",line))
+      {
+            clear_screen(WHITE, BLACK);
+    gotoxy(0, 0);
+        print_string("GAS");
+        while (strcomp("exit", line) != TRUE)
+        {
+          sleep(39304890);
+          sleep(39304890);
+          ans = get_input_keycode();
+          //gotoxy(x, y);
+          if ((int)(get_char(ans)) == 28)
+          {
+            break;
+          }
+          /*else if (get_char(ans) == '\0')
+          {
+          }*/
+          else if (ans == KEY_ENTER)
+          {
+            if(strcomp(line,"exit")){
+              break;
+            }
+            //asm(line);
+            print_new_line();
+            int ia = 0;
+            line[0] = '\0';
+            l = 0;
+          }
+          else if (get_char(ans) == (char)8)
+          {
+            size = strlen(line);
+            if (!size<=1){
+            line[size - 1] = '\0';
+            vga_index = vga_index - 1;
+            l -= 1;}
+          }
+          else
+          {
+            line[l] = get_char(ans);
+            l++;
+            print_char(get_char(ans));
+
+            //x++;
+          }
+        }
+      }
+
       int ia = 0;
-      line[0]='\0';
+      line[0] = '\0';
       l = 0;
-    
     }
-    else if (get_char(ans)=='\0')
+    else if (get_char(ans) == '\0')
     {
-      
     }
-    else if (get_char(ans)==(char)8)
+    else if (get_char(ans) == (char)8)
     {
       size = strlen(line);
-      
-      
-      line[size-1] = '\0';
-      vga_index=vga_index-1;
-      l-=1;
+
+      line[size - 1] = '\0';
+      vga_index = vga_index - 1;
+      l -= 1;
     }
-    
-    
+
     else
     {
       line[l] = get_char(ans);
@@ -488,7 +568,11 @@ void kernel_entry(){
     }
     sleep(29304890 * 5);
     sleep(39304890);
-    if (BUFSIZE-200<=vga_index){clear_F(); gotoxy(0,3);}
+    if (BUFSIZE - 200 <= vga_index)
+    {
+      clear_F();
+      gotoxy(0, 3);
+    }
     //print_int(vga_index);
   }
 }

@@ -3,7 +3,7 @@
 int strcomp(char* str1,char* str2){
 int index=0;
 if (strlen(str1)==strlen(str2)){
- while(index<strlen(str1)){
+ while(index<=strlen(str1)){
      if((int) str1[index]==(int) str2[index]){
          index++;
      }

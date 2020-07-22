@@ -2,7 +2,9 @@
      .type    goprotectedmod,%function
 
 goprotectedmod:
-    mov $0x00,%AH
-    int $0x1A
-    ret
+     mov $00,%ah
+     mov $105,%bx
+     #int $10
+     nop
+     ret
 
