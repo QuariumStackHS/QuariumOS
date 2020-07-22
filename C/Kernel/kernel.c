@@ -4,6 +4,7 @@
 #include "str.h"
 #include "box.h"
 //extern vga_index;
+extern void goprotectedmod();
 uint16 get_box_draw_char(uint8 chn, uint8 fore_color, uint8 back_color)
 {
   uint16 ax = 0;
@@ -360,6 +361,18 @@ char get_char(byte c)
   else if (c==KEY_L){
     return 'l';
   }
+  else if (c==KEY_X)
+  {
+     return 'x';
+  }
+  else if (c==KEY_T)
+  {
+    return 't';
+  }
+  
+  //int v=c+100;
+  //print_int(c);
+  //return (char) v;/*81*/ 
   
   
   else
@@ -378,6 +391,8 @@ void kernel_entry(){
   //print_int(__INT64_MAX__-1);
   print_string(" <--- this is the vga cursor but the real cursor is not that");
   sleep(999999999);sleep(999999999);
+  goprotectedmod();
+  
   int size=0;
   char line[] = "";
   char abc[] = "abc";
@@ -408,9 +423,13 @@ void kernel_entry(){
   //clear_screen(WHITE, BLACK);
   //go_to_protected();
   //sleep(99999999999999999);
-  while (1)
-  {
-    
+  bool Running=TRUE;
+  while (Running)
+  { /*for(int i=0;i<255;i++){
+    print_int(i);
+    print_char((char) i);
+    print_char((char) 32);  }
+    */
     
     ans = get_input_keycode();
     //gotoxy(x, y);
@@ -425,6 +444,8 @@ void kernel_entry(){
       {
         
         print_string("welcome ABCP");
+        print_int((int)KEY_A);
+        print_int((int)'a');
         //x+=12;
         print_new_line();
         //y+2
@@ -432,6 +453,11 @@ void kernel_entry(){
       else if (strbegw("ls",line)){
         print_string("ls command dont work\n");
       }
+      else if (strcomp("exit",line))
+      {
+        Running=FALSE;
+      }
+      
       int ia = 0;
       line[0]='\0';
       l = 0;
