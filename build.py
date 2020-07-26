@@ -35,6 +35,15 @@ for i in C:
     stri=f"as --32 {i} -o output/obj/GAS-{j}.o"
     x=threading.Thread(target=run,args=(stri,))
     x.start()
+"""C=glob.glob("NASM/*.asm")
+for i in C:
+    j=i.split("/")[-1].split(".")[0]
+    objlist.append(f"output/obj/NASM-{j}.o")
+    stri=f"nasm {i} -f elf -o output/obj/NASM-{j}.o"
+    x=threading.Thread(target=run,args=(stri,))
+    x.start()"""
+
+
 x.join()
 while threading.activeCount()>1: pass
 ldstr=""
@@ -59,4 +68,4 @@ os.system("cp grub.cfg output/isodir/boot/grub/grub.cfg")
 os.system("grub2-mkrescue -o output/build/QuariumOS.iso output/isodir")
 
 os.system("qemu-system-x86_64 -cdrom output/build/QuariumOS.iso")
-
+print(255**2)
