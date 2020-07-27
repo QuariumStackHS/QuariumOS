@@ -25,51 +25,40 @@ int str2int(char* number){
   int multiplyer=strlen(number);
   int premult=strlen(number)-1;
   int finalvalue=0;
-  int removedvalue=0;
-  bool didremoved=0;
-  
   while (multiplyer>=0){
-    if (didremoved){didremoved=0;}
-    else
-    {
-      removedvalue=0;
-    }
-    
-    if ( (int)number[multiplyer]==(int)'0'){
-      if (multiplyer!=strlen(number)){
-      finalvalue+= (10-removedvalue)*exp1bydef(10,premult-multiplyer);
-      removedvalue=1;
-      didremoved=1;
-      }
-
-    }
+    //finalvalue+=((int)(number[multiplyer]-48))*exp1bydef(10,premult-multiplyer);
     if( (int)number[multiplyer]==(int)'1'){
-      finalvalue+=(1-removedvalue)*exp1bydef(10,premult-multiplyer);
+      finalvalue+=(1)*exp1bydef(10,premult-multiplyer);
     }
     else if( (int)number[multiplyer]==(int)'2'){
-      finalvalue+=(2-removedvalue)*exp1bydef(10,premult-multiplyer);
+      finalvalue+=(2)*exp1bydef(10,premult-multiplyer);
     }
     else if( (int)number[multiplyer]==(int)'3'){
-      finalvalue+=(3-removedvalue)*exp1bydef(10,premult-multiplyer);
+      finalvalue+=(3)*exp1bydef(10,premult-multiplyer);
     }
     else if( (int)number[multiplyer]==(int)'4'){
-      finalvalue+=(4-removedvalue)*exp1bydef(10,premult-multiplyer);
+      finalvalue+=(4)*exp1bydef(10,premult-multiplyer);
     }
     else if( (int)number[multiplyer]==(int)'5'){
-      finalvalue+=(5-removedvalue)*exp1bydef(10,premult-multiplyer);
+      finalvalue+=(5)*exp1bydef(10,premult-multiplyer);
     }
     else if( (int)number[multiplyer]==(int)'6'){
-      finalvalue+=(6-removedvalue)*exp1bydef(10,premult-multiplyer);
+      finalvalue+=(6)*exp1bydef(10,premult-multiplyer);
     }
     else if( (int)number[multiplyer]==(int)'7'){
-      finalvalue+=(7-removedvalue)*exp1bydef(10,premult-multiplyer);
+      finalvalue+=(7)*exp1bydef(10,premult-multiplyer);
     }
     else if( (int)number[multiplyer]==(int)'8'){
-      finalvalue+=(8-removedvalue)*exp1bydef(10,premult-multiplyer);
+      finalvalue+=(8)*exp1bydef(10,premult-multiplyer);
     }
     else if( (int)number[multiplyer]==(int)'9'){
-      finalvalue+=(9-removedvalue)*exp1bydef(10,premult-multiplyer);
+      finalvalue+=(9)*exp1bydef(10,premult-multiplyer);
     }
+    else
+    {
+      finalvalue+=((int)(number[multiplyer]-48))*exp1bydef(10,premult-multiplyer);
+    }
+    
     multiplyer--;
   }
   return finalvalue;

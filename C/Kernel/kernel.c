@@ -495,7 +495,8 @@ void kernel_entry()
   init_vga(BLACK, RED);
   clear_screen(BLACK, RED);
   byte ans = KEY_Y;
-  //print_int(__INT64_MAX__-1);
+  print_int(str2int("9"));
+  //print_char((char)48);
   print_string(" <--- this is the vga cursor but the real cursor is not that");
   sleep(999999999);
   //sleep(999999999);
@@ -545,7 +546,6 @@ void kernel_entry()
   //print_new_line();
   //print_int(modulus(4,0.5));
   //print_new_line();
-  print_int((str2int("123000000")));
   while (Running)
   { /*for(int i=0;i<255;i++){
     print_int(i);
