@@ -487,6 +487,8 @@ char get_char(byte c)
 /*void go_to_protected(){
   asm
 }*/
+
+
 void kernel_entry()
 {
   //extern go_to_protected();
@@ -539,6 +541,11 @@ void kernel_entry()
   //sleep(99999999999999999);
   bool Running = TRUE;
   //print_char((char)28);
+  //print_int(exp(4,4));
+  //print_new_line();
+  //print_int(modulus(4,0.5));
+  //print_new_line();
+  print_int((str2int("123000000")));
   while (Running)
   { /*for(int i=0;i<255;i++){
     print_int(i);
@@ -585,8 +592,11 @@ void kernel_entry()
         clear_screen(BLACK, RED);
         gotoxy(1, 0);
         print_string("GAS");
+        bool gasrunning=TRUE;
         for (uint16 port = 0x00; port < 255; port++)
-        {
+        { if (!gasrunning){
+          break;
+        }
           for (uint8 data = 0x00; data < 255; data++)
           {
             print_string(" port: ");
@@ -616,13 +626,20 @@ void kernel_entry()
             {
               data = 255;
               port = 255;
+              gasrunning=FALSE;
               clear_F();
+              break;
+              
             }
             else if (anss = KEY_HOME)
             {
               data = 255;
               port = 255;
+              gasrunning=FALSE;
               clear_F();
+              break;
+
+              
             }
 
             sleep(2300000);
