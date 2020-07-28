@@ -1,4 +1,4 @@
 #ifndef CALC_H
 #define CALC_H
-extern void calculus();
+extern void calculus(char *str);
 #endif

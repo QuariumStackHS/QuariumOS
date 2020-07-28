@@ -30,4 +30,4 @@ struct appstruct{
  void (*functions[256])();
  char functions_name[256][24];
 };
-extern struct appstruct apps;
+//extern struct appstruct apps;

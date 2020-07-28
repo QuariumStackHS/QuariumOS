@@ -26,6 +26,19 @@ void append(char s[], char n) {
     s[len] = n;
     s[len+1] = '\0';
 }
+void split(char*str,char sep,int *pointer){
+  for (int i,j=0;i<strlen(str);i++){
+    if ((int)str[i]==(int)sep){
+      j++;
+    }
+    else
+    {
+      pointer[j]=str[i];
+    }
+    
+  }
+}
+
 void strcpystruct(char* structt, char* str){
  for (int i=0; strlen(structt)<strlen(str)-2;i++)
  {

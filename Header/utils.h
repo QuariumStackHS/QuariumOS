@@ -13,5 +13,6 @@ extern int exp(int, int);
 extern float modulus(float, float);
 extern void strcpystruct(char* structt, char* str);
 extern int str2int(char* number);
+extern char* split(char*str,char sep, int *pointer)
 #endif
 

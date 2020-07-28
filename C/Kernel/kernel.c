@@ -584,18 +584,20 @@ void kernel_entry()
     }
     else if (ans == KEY_ENTER)
     {
+      //char fnlstr[256][256];
+      //split(line,'a',&fnlstr);
+
+      //for (int i=0;i<)
+      //print_string("blblblb1");
       sleep(39304890);
 
       //print_new_line();
       /*if (strcomp("calculus",line)){
         calculus();
-      }*/
-      for (int i=0;i<strlen(apps.functions);i++)
-      {
-        if(strbegw(apps.functions_name[i],line)){
-          apps.functions[i]();
-        }
-      }
+      }*/ 
+      extern void execute_func(char* name);
+
+      execute_func(line);
       
       if (strbegw("date", line))
       {
