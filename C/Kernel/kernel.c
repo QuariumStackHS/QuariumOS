@@ -5,6 +5,8 @@
 #include "box.h"
 #include <stdint.h>
 #include <stddef.h>
+#include "calc.h"
+#include "structapp.h"
 //extern vga_index;
 extern int goprotectedmod();
 
@@ -70,11 +72,6 @@ void reverse(char s[]) {
 }
 
 
-void append(char s[], char n) {
-    int len = strlen(s);
-    s[len] = n;
-    s[len+1] = '\0';
-}
 
 void backspace(char s[]) {
     int len = strlen(s);
@@ -247,6 +244,26 @@ void clear_screen(uint8 fore_color, uint8 back_color)
   clear_vga_buffer(&vga_buffer, fore_color, back_color);
 }
 void clear_FS() { print_string("test"); }
+void clear_FC(struct app app)
+{
+  clear_screen(BLACK, RED);
+  gotoxy(5, 0);
+  char strs[] = "Q-DOS: ";
+  char bar[]="";
+  //print_char((int) 196);
+
+
+  draw_box(BOX_SINGLELINE, 0, 0, 78, 23, BLACK, RED);
+  print_color_string(strs, BLACK, RED);
+  print_color_string(VERSION, BLACK, RED);
+  //print_color_string(bar, BLACK, RED);
+  gotoxy(45,0);
+  print_color_string(app.name, BLACK, app.backcolor);
+  print_color_string(app.version, BLACK, app.backcolor);
+
+  print_new_line();
+  return;
+}
 void clear_F()
 {
   clear_screen(BLACK, RED);
@@ -339,7 +356,6 @@ byte get_input_keycode()
   int a = 0;
   int j = 0;
   byte keycode = 0;
-  print_color_string("_", WHITE, BLACK);
   while ((keycode = inb(KEYBOARD_PORT)) != 0)
   {
     vga_index = oldvgai;
@@ -474,7 +490,10 @@ char get_char(byte c)
   {
     return 'r';
   }
-
+  else if (c == KEY_U)
+  {
+    return 'u';
+  }
   //int v=c+100;
   //print_int(c);
   //return (char) v;/*81*/
@@ -495,7 +514,7 @@ void kernel_entry()
   init_vga(BLACK, RED);
   clear_screen(BLACK, RED);
   byte ans = KEY_Y;
-  print_int(str2int("9"));
+  
   //print_char((char)48);
   print_string(" <--- this is the vga cursor but the real cursor is not that");
   sleep(999999999);
@@ -567,6 +586,9 @@ void kernel_entry()
       sleep(39304890);
 
       //print_new_line();
+      if (strcomp("calculus",line)){
+        calculus();
+      }
       if (strbegw("date", line))
       {
 //outb(0x0071,0x0a);

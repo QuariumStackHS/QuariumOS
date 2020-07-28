@@ -21,6 +21,21 @@ uint32 digit_count(int num)
   }
   return count;
 }
+void append(char s[], char n) {
+    int len = strlen(s);
+    s[len] = n;
+    s[len+1] = '\0';
+}
+void strcpystruct(char* structt, char* str){
+ for (int i=0; i<strlen(str);i++)
+ {
+
+   print_int(strlen(structt));
+   //sleep(900000000000);
+   append(structt,str[i]);
+ }
+ 
+}
 int str2int(char* number){
   int multiplyer=strlen(number);
   int premult=strlen(number)-1;
@@ -54,11 +69,11 @@ int str2int(char* number){
     else if( (int)number[multiplyer]==(int)'9'){
       finalvalue+=(9)*exp1bydef(10,premult-multiplyer);
     }
-    else
+    /*else
     {
       finalvalue+=((int)(number[multiplyer]-48))*exp1bydef(10,premult-multiplyer);
     }
-    
+*/    
     multiplyer--;
   }
   return finalvalue;

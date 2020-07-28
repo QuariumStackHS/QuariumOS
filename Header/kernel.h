@@ -11,24 +11,7 @@
 uint16* vga_buffer;
 extern uint32 vga_index;
 
-enum vga_color {
-    BLACK,
-    BLUE,
-    GREEN,
-    CYAN,
-    RED,
-    MAGENTA,
-    BROWN,
-    GREY,
-    DARK_GREY,
-    BRIGHT_BLUE,
-    BRIGHT_GREEN,
-    BRIGHT_CYAN,
-    BRIGHT_RED,
-    BRIGHT_MAGENTA,
-    YELLOW,
-    WHITE,
-};
+
 
 extern void clear_screen(uint8, uint8);
 extern void print_new_line();
