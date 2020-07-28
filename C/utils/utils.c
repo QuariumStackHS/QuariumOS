@@ -27,7 +27,7 @@ void append(char s[], char n) {
     s[len+1] = '\0';
 }
 void strcpystruct(char* structt, char* str){
- for (int i=0; i<strlen(str);i++)
+ for (int i=0; strlen(structt)<strlen(str)-2;i++)
  {
 
    print_int(strlen(structt));

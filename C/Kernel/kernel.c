@@ -257,9 +257,9 @@ void clear_FC(struct app app)
   print_color_string(strs, BLACK, RED);
   print_color_string(VERSION, BLACK, RED);
   //print_color_string(bar, BLACK, RED);
-  gotoxy(45,0);
+  gotoxy(30,0);
   print_color_string(app.name, BLACK, app.backcolor);
-  print_color_string(app.version, BLACK, app.backcolor);
+  //print_color_string(app.version, BLACK, app.backcolor);
 
   print_new_line();
   return;
@@ -510,6 +510,7 @@ char get_char(byte c)
 
 void kernel_entry()
 {
+  add_allcommandes();
   //extern go_to_protected();
   init_vga(BLACK, RED);
   clear_screen(BLACK, RED);
@@ -586,9 +587,16 @@ void kernel_entry()
       sleep(39304890);
 
       //print_new_line();
-      if (strcomp("calculus",line)){
+      /*if (strcomp("calculus",line)){
         calculus();
+      }*/
+      for (int i=0;i<strlen(apps.functions);i++)
+      {
+        if(strbegw(apps.functions_name[i],line)){
+          apps.functions[i]();
+        }
       }
+      
       if (strbegw("date", line))
       {
 //outb(0x0071,0x0a);

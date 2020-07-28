@@ -50,7 +50,9 @@ ldstr=""
 for i in objlist:
     ldstr+=f"{i} "
 os.system(f"ld -m elf_i386 -T output/obj/linker.ld {ldstr}-o output/prebuild/Quarium.QOSE -nostdlib")
-print(ldstr)
+print("all obj:")
+for i in ldstr.split(" "):
+    print("\t"+i.replace("output/obj/",""))
 import time
 #zipf = zipfile.ZipFile(f'/media/slow/backups/backups/QuariumOS-{time.time()}.zip', 'w', zipfile.ZIP_DEFLATED)
 #zipdir('.', zipf)
@@ -61,11 +63,11 @@ os.system("grub2-file --is-x86-multiboot output/prebuild/Quarium.QOSE")
 
 os.system("mkdir -p output/isodir/boot/grub")
 
-os.system("cp output/prebuild/Quarium.QOSE output/isodir/boot/Q-dos.os")
+os.system("cp output/prebuild/Quarium.QOSE output/isodir/boot/Q-DOS.os")
 
 os.system("cp grub.cfg output/isodir/boot/grub/grub.cfg")
 
-os.system("grub2-mkrescue -o output/build/Q-dos.iso output/isodir")
+os.system("grub2-mkrescue -o output/build/Q-DOS.iso output/isodir")
 
-os.system("qemu-system-x86_64 -cdrom output/build/Q-dos.iso")
+os.system("qemu-system-x86_64 -cdrom output/build/Q-DOS.iso")
 print(255**2)
