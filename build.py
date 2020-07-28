@@ -61,11 +61,11 @@ os.system("grub2-file --is-x86-multiboot output/prebuild/Quarium.QOSE")
 
 os.system("mkdir -p output/isodir/boot/grub")
 
-os.system("cp output/prebuild/Quarium.QOSE output/isodir/boot/Quarium.os")
+os.system("cp output/prebuild/Quarium.QOSE output/isodir/boot/Q-dos.os")
 
 os.system("cp grub.cfg output/isodir/boot/grub/grub.cfg")
 
-os.system("grub2-mkrescue -o output/build/QuariumOS.iso output/isodir")
+os.system("grub2-mkrescue -o output/build/Q-dos.iso output/isodir")
 
-os.system("qemu-system-x86_64 -cdrom output/build/QuariumOS.iso")
+os.system("qemu-system-x86_64 -cdrom output/build/Q-dos.iso")
 print(255**2)
