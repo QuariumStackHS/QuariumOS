@@ -595,6 +595,12 @@ void kernel_entry()
       /*if (strcomp("calculus",line)){
         calculus();
       }*/ 
+      struct splitter splited;
+      split(line,'a',splited);
+      print_int(strlen(splited.splited[0])+strlen(splited.splited[1]));
+      for (int i=0;i<2;i++){
+        print_string(splited.splited[i]);
+      }
       extern void execute_func(char* name);
 
       execute_func(line);

@@ -2,6 +2,7 @@
 #define UTILS_H
 
 #include "types.h"
+#include "utils-struct.h"
 
 #define TRUE  1
 #define FALSE 0
@@ -13,6 +14,6 @@ extern int exp(int, int);
 extern float modulus(float, float);
 extern void strcpystruct(char* structt, char* str);
 extern int str2int(char* number);
-extern char* split(char*str,char sep, int *pointer)
+extern void split(char*str,char sep,struct splitter splited);
 #endif
 

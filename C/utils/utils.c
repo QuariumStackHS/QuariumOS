@@ -1,7 +1,9 @@
 #include "utils.h"
+
 extern print_new_line();
 extern print_int(int);
 extern sleep(int);
+extern print_string(char*);
 uint32 strlen(const char* str)
 {
   uint32 length = 0;
@@ -26,17 +28,26 @@ void append(char s[], char n) {
     s[len] = n;
     s[len+1] = '\0';
 }
-void split(char*str,char sep,int *pointer){
-  for (int i,j=0;i<strlen(str);i++){
+void split(char* str,char sep,struct splitter splited){
+  //print_int(strlen(str));
+  int j=0;
+  for (int i=0;i<strlen(str);i++){
     if ((int)str[i]==(int)sep){
+      //print_string("splitting");
       j++;
     }
     else
     {
-      pointer[j]=str[i];
+      splited.splited[j][i]=str[i];
     }
     
   }
+  for(int i=0;i<=j;i++){
+    print_new_line();
+    print_string(splited.splited[i]);
+    
+  }
+  //return splited;
 }
 
 void strcpystruct(char* structt, char* str){

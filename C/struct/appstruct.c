@@ -19,6 +19,12 @@ void execute_func(char* name,char* args){
     }
 
 }
+void test(){
+    extern print_string(char*);
+    print_string("test common executed sexecflu");
+}
 void add_allcommandes(){
     addfunct(calculus,"calculus");
+    addfunct(test,"t");
+
 }
