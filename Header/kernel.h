@@ -5,14 +5,10 @@
 
 #define NULL 0
 
-#define VGA_ADDRESS 0xB8000
-#define BUFSIZE 2200
-
-uint16* vga_buffer;
-extern uint32 vga_index;
 
 
-
+extern byte get_input_keycodemath();
+extern char get_char(byte c);
 extern void clear_screen(uint8, uint8);
 extern void print_new_line();
 extern void print_char(char);

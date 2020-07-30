@@ -7,19 +7,28 @@
 #include <stddef.h>
 #include "calc.h"
 #include "structapp.h"
+#define VGA_ADDRESS 0xB8000
+#define BUFSIZE 2200
+
+uint16 *vga_buffer;
+extern uint32 vga_index;
 //extern vga_index;
 extern int goprotectedmod();
 
-void memory_copy(uint8 *source, uint8 *dest, int nbytes) {
-    int i;
-    for (i = 0; i < nbytes; i++) {
-        *(dest + i) = *(source + i);
-    }
+void memory_copy(uint8 *source, uint8 *dest, int nbytes)
+{
+  int i;
+  for (i = 0; i < nbytes; i++)
+  {
+    *(dest + i) = *(source + i);
+  }
 }
 
-void memory_set(uint8 *dest, uint8 val, uint32 len) {
-    uint8 *temp = (uint8 *)dest;
-    for ( ; len != 0; len--) *temp++ = val;
+void memory_set(uint8 *dest, uint8 val, uint32 len)
+{
+  uint8 *temp = (uint8 *)dest;
+  for (; len != 0; len--)
+    *temp++ = val;
 }
 
 /* This should be computed at link time, but a hardcoded
@@ -28,54 +37,65 @@ void memory_set(uint8 *dest, uint8 val, uint32 len) {
 uint32_t free_mem_addr = 0x10000;
 /* Implementation is just a pointer to some free memory which
  * keeps growing */
-uint32_t kmalloc(size_t size, int align, uint32_t *phys_addr) {
-    /* Pages are aligned to 4K, or 0x1000 */
-    if (align == 1 && (free_mem_addr & 0xFFFFF000)) {
-        free_mem_addr &= 0xFFFFF000;
-        free_mem_addr += 0x1000;
-    }
-    /* Save also the physical address */
-    if (phys_addr) *phys_addr = free_mem_addr;
+uint32_t kmalloc(size_t size, int align, uint32_t *phys_addr)
+{
+  /* Pages are aligned to 4K, or 0x1000 */
+  if (align == 1 && (free_mem_addr & 0xFFFFF000))
+  {
+    free_mem_addr &= 0xFFFFF000;
+    free_mem_addr += 0x1000;
+  }
+  /* Save also the physical address */
+  if (phys_addr)
+    *phys_addr = free_mem_addr;
 
-    uint32_t ret = free_mem_addr;
-    free_mem_addr += size; /* Remember to increment the pointer */
-    return ret;
+  uint32_t ret = free_mem_addr;
+  free_mem_addr += size; /* Remember to increment the pointer */
+  return ret;
 }
-void hex_to_ascii(int n, char str[]) {
-    append(str, '0');
-    append(str, 'x');
-    char zeros = 0;
+void hex_to_ascii(int n, char str[])
+{
+  append(str, '0');
+  append(str, 'x');
+  char zeros = 0;
 
-    __INT32_TYPE__ tmp;
-    int i;
-    for (i = 28; i > 0; i -= 4) {
-        tmp = (n >> i) & 0xF;
-        if (tmp == 0 && zeros == 0) continue;
-        zeros = 1;
-        if (tmp > 0xA) append(str, tmp - 0xA + 'a');
-        else append(str, tmp + '0');
-    }
+  __INT32_TYPE__ tmp;
+  int i;
+  for (i = 28; i > 0; i -= 4)
+  {
+    tmp = (n >> i) & 0xF;
+    if (tmp == 0 && zeros == 0)
+      continue;
+    zeros = 1;
+    if (tmp > 0xA)
+      append(str, tmp - 0xA + 'a');
+    else
+      append(str, tmp + '0');
+  }
 
-    tmp = n & 0xF;
-    if (tmp >= 0xA) append(str, tmp - 0xA + 'a');
-    else append(str, tmp + '0');
+  tmp = n & 0xF;
+  if (tmp >= 0xA)
+    append(str, tmp - 0xA + 'a');
+  else
+    append(str, tmp + '0');
 }
 
 /* K&R */
-void reverse(char s[]) {
-    int c, i, j;
-    for (i = 0, j = strlen(s)-1; i < j; i++, j--) {
-        c = s[i];
-        s[i] = s[j];
-        s[j] = c;
-    }
+void reverse(char s[])
+{
+  int c, i, j;
+  for (i = 0, j = strlen(s) - 1; i < j; i++, j--)
+  {
+    c = s[i];
+    s[i] = s[j];
+    s[j] = c;
+  }
 }
 
-
-
-void backspace(char s[]) {
-    int len = strlen(s);
-    s[len-1] = '\0';
+void backspace(char s[])
+{
+  int len = strlen(s);
+  s[len - 1] = '\0';
 }
 uint16 get_box_draw_char(uint8 chn, uint8 fore_color, uint8 back_color)
 {
@@ -249,15 +269,14 @@ void clear_FC(struct app app)
   clear_screen(BLACK, RED);
   gotoxy(5, 0);
   char strs[] = "Q-DOS: ";
-  char bar[]="";
+  char bar[] = "";
   //print_char((int) 196);
-
 
   draw_box(BOX_SINGLELINE, 0, 0, 78, 23, BLACK, RED);
   print_color_string(strs, BLACK, RED);
   print_color_string(VERSION, BLACK, RED);
   //print_color_string(bar, BLACK, RED);
-  gotoxy(30,0);
+  gotoxy(30, 0);
   print_color_string(app.name, BLACK, app.backcolor);
   //print_color_string(app.version, BLACK, app.backcolor);
 
@@ -348,7 +367,42 @@ void outb(uint16 port, uint8 data)
                : "=a"(data)
                : "d"(port));
 }
+byte get_input_keycodemath()
+{
+  uint16 oldvgai = vga_index;
+  int curs = 0;
+  int a = 0;
+  int j = 0;
+  byte keycode = 0;
+  for(keycode = inb(KEYBOARD_PORT);TRUE;curs=0)
+  {
+    vga_index = oldvgai;
+    if (keycode > 0)
+    {
+      a = 1;
+    }
 
+    if (j == 200000 / 10)
+    {
+      print_color_string("|", BLACK, RED);
+      j = 0;
+    }
+    if (j == 100000 / 10)
+    {
+      print_color_string("_", RED, RED);
+    }
+    j++;
+    //if ((int)a==KEY_EQUAL){
+      //a=107;
+    //}
+      if (isin(get_char(a),"1234567890x/-+")){
+        print_color_string("_", RED, RED);
+      vga_index = oldvgai;
+      return keycode;}
+    
+  }
+  
+}
 byte get_input_keycode()
 {
   uint16 oldvgai = vga_index;
@@ -507,7 +561,6 @@ char get_char(byte c)
   asm
 }*/
 
-
 void kernel_entry()
 {
   add_allcommandes();
@@ -515,7 +568,7 @@ void kernel_entry()
   init_vga(BLACK, RED);
   clear_screen(BLACK, RED);
   byte ans = KEY_Y;
-  
+
   //print_char((char)48);
   print_string(" <--- this is the vga cursor but the real cursor is not that");
   sleep(999999999);
@@ -594,23 +647,17 @@ void kernel_entry()
       //print_new_line();
       /*if (strcomp("calculus",line)){
         calculus();
-      }*/ 
-      struct splitter splited;
-      split(line,'a',splited);
-      print_int(strlen(splited.splited[0])+strlen(splited.splited[1]));
-      for (int i=0;i<2;i++){
-        print_string(splited.splited[i]);
-      }
-      extern void execute_func(char* name);
+      }*/
+      extern void execute_func(char *name);
 
       execute_func(line);
-      
+
       if (strbegw("date", line))
       {
-//outb(0x0071,0x0a);
-        byte thing =inb(0x71); 
-        char time[]="";
-        hex_to_ascii((int)thing,time);
+        //outb(0x0071,0x0a);
+        byte thing = inb(0x71);
+        char time[] = "";
+        hex_to_ascii((int)thing, time);
         print_string(time);
       }
       else if (strbegw("clears", line))
@@ -630,11 +677,13 @@ void kernel_entry()
         clear_screen(BLACK, RED);
         gotoxy(1, 0);
         print_string("GAS");
-        bool gasrunning=TRUE;
+        bool gasrunning = TRUE;
         for (uint16 port = 0x00; port < 255; port++)
-        { if (!gasrunning){
-          break;
-        }
+        {
+          if (!gasrunning)
+          {
+            break;
+          }
           for (uint8 data = 0x00; data < 255; data++)
           {
             print_string(" port: ");
@@ -664,20 +713,17 @@ void kernel_entry()
             {
               data = 255;
               port = 255;
-              gasrunning=FALSE;
+              gasrunning = FALSE;
               clear_F();
               break;
-              
             }
             else if (anss = KEY_HOME)
             {
               data = 255;
               port = 255;
-              gasrunning=FALSE;
+              gasrunning = FALSE;
               clear_F();
               break;
-
-              
             }
 
             sleep(2300000);

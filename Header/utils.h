@@ -14,6 +14,7 @@ extern int exp(int, int);
 extern float modulus(float, float);
 extern void strcpystruct(char* structt, char* str);
 extern int str2int(char* number);
-extern void split(char*str,char sep,struct splitter splited);
+extern bool isin(char n,char* list);
+//extern void split(char*str,char sep,struct splitter splited);
 #endif
 

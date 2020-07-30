@@ -1,11 +1,8 @@
 #include "calc.h"
 #include "utils.h"
 #include "structapp.h"
-extern void clear_FC();
-extern void print_int(int);
-extern void print_string(char*);
-extern void print_new_line();
-void calculus(char *str){
+#include "kernel.h"
+void calculus(){
     struct app calculus_app;
     calculus_app.backcolor=BRIGHT_GREEN;
     //strcpystruct(calculus_app.name,"calculus");
@@ -18,7 +15,10 @@ void calculus(char *str){
     
     //for(int i=-99999999;i<__INT64_MAX__;i++){}
     clear_FC(calculus_app);
-    print_int(strlen(calculus_app.version));
-    print_string(str);
-    print_int(strlen(calculus_app.name));
+    while (TRUE)
+    {
+        print_char(get_input_keycodemath());
+    }
+    
+    
 }

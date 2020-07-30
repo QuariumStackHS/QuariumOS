@@ -3,17 +3,17 @@
 #include "str.h"
 #include "calc.h"
 struct appstruct apps;
-void addfunct(void (*functions),char* name ){
-    apps.functions[strlen(apps.functions)+1]=functions;
+void addfunct(void (*functions),char* name,int id ){
+    apps.functions[id]=functions;
     for(int i=0; i<strlen(name);i++){
-    apps.functions_name[strlen(apps.functions_name)+1][i]=name[i];
+    apps.functions_name[id][i]=name[i];
     }
 
 }
 void execute_func(char* name,char* args){
     for (int i=0;i<256;i++){
         if (strbegw(name,apps.functions_name[i])){
-            apps.functions[i](args);
+            apps.functions[i]();
 
         }
     }
@@ -24,7 +24,7 @@ void test(){
     print_string("test common executed sexecflu");
 }
 void add_allcommandes(){
-    addfunct(calculus,"calculus");
-    addfunct(test,"t");
+    addfunct(calculus,"calculus",0);
+    addfunct(test,"t",1);
 
 }

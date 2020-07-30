@@ -1,6 +1,7 @@
-extern void addfunct(void (*functions),char* name );
+extern void addfunct(void(*functions), char *name, int id);
 extern void add_allcommandes();
-enum vga_color {
+enum vga_color
+{
     BLACK,
     BLUE,
     GREEN,
@@ -19,15 +20,15 @@ enum vga_color {
     WHITE,
 };
 
-
-struct app 
+struct app
 {
-            char name[9];
-            char version[4];
-            int backcolor;
+    char name[9];
+    char version[4];
+    int backcolor;
 };
-struct appstruct{
- void (*functions[256])();
- char functions_name[256][24];
+struct appstruct
+{
+    void (*functions[256])();
+    char functions_name[256][24];
 };
 //extern struct appstruct apps;
